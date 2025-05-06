@@ -178,10 +178,16 @@ def run():
     # ✅ 9️⃣ 예측 결과 출력
     if "result_df_m3" in st.session_state and "result_df_mj" in st.session_state:
         st.write("### 예측 결과 - 부피 (M3)")
-        st.dataframe(st.session_state["result_df_m3"])
+        df_m3_formatted = st.session_state["result_df_m3"].copy()
+        for col in df_m3_formatted.columns[2:]:  # 모델 예측 컬럼만 포맷
+            df_m3_formatted[col] = df_m3_formatted[col].apply(lambda x: f"{x:,}")
+        st.dataframe(df_m3_formatted)
 
         st.write("### 예측 결과 - 열량 (MJ)")
-        st.dataframe(st.session_state["result_df_mj"])
+        df_mj_formatted = st.session_state["result_df_mj"].copy()
+        for col in df_mj_formatted.columns[2:]:
+            df_mj_formatted[col] = df_mj_formatted[col].apply(lambda x: f"{x:,}")
+        st.dataframe(df_mj_formatted)
 
     st.markdown(f"**🔍 현재 학습 데이터 설정:** {st.session_state.get('training_info', '아직 학습 안됨')}")
 
