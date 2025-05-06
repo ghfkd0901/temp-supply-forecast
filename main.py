@@ -1,8 +1,16 @@
 import streamlit as st
+import pandas as pd
+from pathlib import Path
 from apps.temp_forecast import run as run_temp_forecast
 from apps.supply_forecast import run as run_supply_forecast
 from apps.temp_model_anal import run as run_temp_model_anal
 from apps.supply_model_anal import run as run_supply_model_anal
+
+# 마지막 날짜 반환 함수
+def get_last_date():
+    DATA_PATH = Path.cwd() / "data" / "weather_supply.csv"
+    df = pd.read_csv(DATA_PATH, encoding="utf-8")
+    return df["date"].iloc[-1]
 
 
 # 페이지 구성은 반드시 첫 줄에서 설정
@@ -29,3 +37,7 @@ elif selected_page == "기온 예측 모델 분석":
     run_temp_model_anal()
 elif selected_page == "공급량 예측 모델 분석":
     run_supply_model_anal()
+
+# ✅ 마지막 날짜 정보 표시
+last_date = get_last_date()
+st.sidebar.markdown(f"<hr><small>📅 데이터 최신 날짜: <b>{last_date}</b></small>", unsafe_allow_html=True)

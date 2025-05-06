@@ -86,7 +86,10 @@ def run():
 
         # ✅ 연도별 색상 (이산형 but 그라데이션)
         year_list = sorted(df["연"].unique())
-        colors = sample_colorscale("Viridis", [i / (len(year_list)-1) for i in range(len(year_list))])
+        if len(year_list) <= 1:
+            colors = ["#440154"]  # Viridis 색상 중 하나
+        else:
+            colors = sample_colorscale("Viridis", [i / (len(year_list) - 1) for i in range(len(year_list))])
         color_map = {year: colors[i] for i, year in enumerate(year_list)}
 
         for i, (name, model) in enumerate(models.items()):
